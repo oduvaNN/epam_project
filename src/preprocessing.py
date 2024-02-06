@@ -5,6 +5,7 @@ import pandas as pd
 from pathlib import Path
 import os
 from nltk.stem.snowball import SnowballStemmer
+from nltk.stem import WordNetLemmatizer
 from src.util import get_wordnet_pos
 
 # Load the data
@@ -21,7 +22,7 @@ def tokenize_and_filter_stopwords(text):
     return filtered_tokens
 
 
-def stematize_words(stemmer, text):
+def stemmatize_words(stemmer, text):
     words = word_tokenize(text)
     return [stemmer.stem(word) for word in words]
 
@@ -42,3 +43,6 @@ if __name__ == '__main__':
 
     # Display the updated DataFrame with the filtered review column
     print(train_data[['review', 'filtered_review']].head())
+
+    lemmatizer = WordNetLemmatizer()
+    stemmer = SnowballStemmer('english')
