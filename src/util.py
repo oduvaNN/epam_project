@@ -1,5 +1,5 @@
 from nltk.corpus import wordnet
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 def get_wordnet_pos(tag):
     if tag.startswith('J'):
@@ -16,5 +16,10 @@ def get_wordnet_pos(tag):
 
 def count_vectorize(text):
     vectorizer = CountVectorizer()
+    text = vectorizer.fit_transform(text)
+    return text
+
+def tf_idf_vectorize(text):
+    vectorizer = TfidfVectorizer()
     text = vectorizer.fit_transform(text)
     return text
