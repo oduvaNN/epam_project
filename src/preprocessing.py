@@ -2,10 +2,14 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import pandas as pd
+from pathlib import Path
+import os
 
 # Load the data
-train_data = pd.read_csv("C:/Users/user/Desktop/homework/project/train.csv", sep=',')
+parent = Path(__file__).parent
+data_path = os.path.join(parent, "data/raw")
 
+train_data = pd.read_csv(os.path.join(data_path, "train.csv"), sep=',')
 train_data['tokenized_review'] = train_data['review'].apply(lambda x: word_tokenize(x))
 
 # Display the updated DataFrame with the tokenized column
