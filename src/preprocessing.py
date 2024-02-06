@@ -1,9 +1,11 @@
-import nltk
+from nltk import pos_tag
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import pandas as pd
 from pathlib import Path
 import os
+from nltk.stem.snowball import SnowballStemmer
+from src.util import get_wordnet_pos
 
 # Load the data
 parent = Path(__file__).parent
@@ -17,6 +19,17 @@ def tokenize_and_filter_stopwords(text):
     tokens = word_tokenize(text)
     filtered_tokens = [word.lower() for word in tokens if word.isalpha() and word.lower() not in stop_words]
     return filtered_tokens
+
+
+def stematize_words(stemmer, text):
+    words = word_tokenize(text)
+    return [stemmer.stem(word) for word in words]
+
+
+def lemmatize_words(lemmatizer, text):
+    words = word_tokenize(text)
+    pos_tags = pos_tag(words)
+    return [lemmatizer.lemmatize(word, get_wordnet_pos(tag)) for word, tag in pos_tags]
 
 
 if __name__ == '__main__':
