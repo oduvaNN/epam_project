@@ -1,5 +1,5 @@
 from nltk.corpus import wordnet
-
+from sklearn.feature_extraction.text import CountVectorizer
 
 def get_wordnet_pos(tag):
     if tag.startswith('J'):
@@ -12,3 +12,9 @@ def get_wordnet_pos(tag):
         return wordnet.ADV
     else:
         return wordnet.NOUN
+
+
+def count_vectorize(text):
+    vectorizer = CountVectorizer()
+    text = vectorizer.fit_transform(text)
+    return text
