@@ -21,7 +21,7 @@ train_data = pd.read_csv(os.path.join(data_path, "train.csv"), sep=',')
 test_data = pd.read_csv(os.path.join(data_path, "test.csv"), sep=',')
 
 def remove_irrelevant_chars(text):
-    text = re.sub('[^a-zA-Z]', ' ', text)  # Remove numbers
+    text = re.sub('[^a-zA-Z]', ' ', text)  
     return text
 
 def tokenize_text(text):
@@ -64,7 +64,6 @@ def preprocess_data(data):
     return data
 
 def vectorize_and_train(train_data, test_data, vectorizer_type='count'):
-    # Vectorize train_data and test_data using CountVectorizer or TfidfVectorizer
     if vectorizer_type == 'count':
         vectorizer = CountVectorizer()
     elif vectorizer_type == 'tfidf':
@@ -119,11 +118,6 @@ if __name__ == '__main__':
     The mention of "new york city" in both positive and negative reviews suggests the importance of setting or context in shaping viewer opinions.'''
     #------------------------------------------------------------------
     
-    # Call the function for CountVectorizer
-    vectorize_and_train(train_data, test_data, vectorizer_type='count')
-
-    # Call the function for TfidfVectorizer
-    vectorize_and_train(train_data, test_data, vectorizer_type='tfidf')
 
 """For CountVectorizer:
 The precision, recall, and F1-score for the 'negative' class are all 0.89, indicating balanced performance in correctly identifying negative sentiment.
