@@ -8,7 +8,8 @@ from pathlib import Path
 from datetime import datetime
 from src.train.load_data import create_dataloaders
 
-EXPERIMENT_NAME = f"sentimentalRNN_{datetime.now()}"
+
+EXPERIMENT_NAME = f"sentimentalRNN_1"
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 device = torch.device(device)
 
@@ -21,8 +22,8 @@ train_path = os.path.join(data_path, "train.pkl")
 test_path = os.path.join(data_path, 'test.pkl')
 
 class TrainPipeline:
-    def __init__(self, num_layers, vocab, embedding_dim, hidden_dim, lr, batch_size):
-        self.model = SentimentRNN(num_layers, len(vocab) + 1, hidden_dim, embedding_dim)
+    def __init__(self, num_layers, vocab_size, embedding_dim, hidden_dim, lr, batch_size):
+        self.model = SentimentRNN(num_layers, vocab_size, hidden_dim, embedding_dim)
 
         self.model.to(device)
         self.batch_size = batch_size
@@ -42,7 +43,7 @@ class TrainPipeline:
 
     def train(self, epochs, train_loader: DataLoader, test_loader: DataLoader):
 
-        for epoch in epochs:
+        for epoch in range(epochs):
             print(f"Epoch {epoch}")
             tr_ls = []  # train losses for batches in this epoch
             ev_ls = []  # same but eval loss
@@ -104,7 +105,9 @@ class TrainPipeline:
 
 
 if __name__ == '__main__':
+    print(torch.cuda.is_available())
     batch_size = 50
-    train_loader, test_loader = create_dataloaders(train_path, test_path, batch_size)
+    train_loader, test_loader, vocab_size = create_dataloaders(train_path, test_path, batch_size)
 
-    pipeline = TrainPipeline()
+    pipeline = TrainPipeline(2, vocab_size, 64, 256, 0.001, batch_size)
+    pipeline.train(5, train_loader, test_loader)
