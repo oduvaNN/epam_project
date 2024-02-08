@@ -75,6 +75,7 @@ def preprocess_data(data):
     print("made final preprocessed version", flush=True)
     return data
 
+
 def vectorize_and_train(train_data, test_data, vectorizer_type='count'):
     if vectorizer_type == 'count':
         vectorizer = CountVectorizer()
