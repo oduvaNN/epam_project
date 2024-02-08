@@ -35,4 +35,4 @@ def create_dataloaders(train_path, test_path, batch_size):
     train_loader = DataLoader(train_dataset, shuffle=True, batch_size=batch_size)
     test_loader = DataLoader(test_dataset, shuffle=True, batch_size=batch_size)
 
-    return train_loader, test_loader
+    return train_loader, test_loader, train_x.shape[1:]
