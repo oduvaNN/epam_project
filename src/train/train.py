@@ -6,6 +6,7 @@ import numpy as np
 import os
 from pathlib import Path
 from datetime import datetime
+from src.train.load_data import create_dataloaders
 
 EXPERIMENT_NAME = f"sentimentalRNN_{datetime.now()}"
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -15,8 +16,9 @@ parent = Path(__file__).parent
 model_path = os.path.join(parent, "../../outputs", EXPERIMENT_NAME)
 Path(model_path).mkdir(parents=True, exist_ok=True)
 
-# TODO: create dataloader (maybe in separate file)
-
+data_path = os.path.join(parent, "../../data/processed")
+train_path = os.path.join(data_path, "train.pkl")
+test_path = os.path.join(data_path, 'test.pkl')
 
 class TrainPipeline:
     def __init__(self, num_layers, vocab, embedding_dim, hidden_dim, lr, batch_size):
@@ -99,3 +101,10 @@ class TrainPipeline:
                 self.best_loss = ep_ev_ls
 
         print('='*25)
+
+
+if __name__ == '__main__':
+    batch_size = 50
+    train_loader, test_loader = create_dataloaders(train_path, test_path, batch_size)
+
+    pipeline = TrainPipeline()
