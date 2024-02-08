@@ -9,13 +9,13 @@ from pathlib import Path
 import os
 from wordcloud import WordCloud
 from collections import Counter
-
+from src.preprocessing import print_most_frequent_ngrams, generate_ngrams
 
 nltk.download('punkt')
 nltk.download('stopwords')
 
 parent = Path(__file__).parent
-data_path = os.path.join(parent, "data/raw")
+data_path = os.path.join(parent, "data/processed")
 
 train_data = pd.read_csv(os.path.join(data_path, "train.csv"), sep=',')
 test_data = pd.read_csv(os.path.join(data_path, "test.csv"), sep=',')
@@ -117,6 +117,21 @@ if __name__ == '__main__':
 
     print("\nTop 10 words in Negative Reviews:")
     print(negative_word_freq.most_common(20))
+
+    train_data['bigrams'] = train_data['final_review'].apply(lambda x: generate_ngrams(x, 2))
+    train_data['threegrams'] = train_data['final_review'].apply(lambda x: generate_ngrams(x, 3))
+
+    print_most_frequent_ngrams(train_data, 'bigrams', 'positive', 2)
+    print_most_frequent_ngrams(train_data, 'threegrams', 'positive', 3)
+    print_most_frequent_ngrams(train_data, 'bigrams', 'negative', 2)
+    print_most_frequent_ngrams(train_data, 'threegrams', 'negative', 3)
+
+    # analysis for eda
+    '''Positive reviews tend to focus on specific elements such as effects, character development, and narrative quality.
+    Negative reviews often mention disappointment with aspects like plot coherence, acting, and overall production value.
+    Certain phrases like "worst movie ever" and "best movie ever" are highly polarizing and frequently appear in negative and positive reviews, respectively.
+    The mention of "new york city" in both positive and negative reviews suggests the importance of setting or context in shaping viewer opinions.'''
+    # ------------------------------------------------------------------
 
 
 
