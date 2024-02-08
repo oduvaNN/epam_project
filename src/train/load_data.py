@@ -26,8 +26,9 @@ def create_dataloaders(train_path, test_path, batch_size):
     train_x = vectorizer.transform(train_data['final_review']).toarray()
     test_x = vectorizer.transform(test_data['final_review']).toarray()
     train_y = train_data['sentiment'].values
-    test_y = train_data['sentiment'].values
-
+    test_y = test_data['sentiment'].values
+    print(train_x.shape, train_y.shape)
+    print(test_x.shape, test_y.shape)
     train_dataset = TensorDataset(torch.from_numpy(train_x), torch.from_numpy(train_y))
     test_dataset = TensorDataset(torch.from_numpy(test_x), torch.from_numpy(test_y))
 
@@ -35,11 +36,3 @@ def create_dataloaders(train_path, test_path, batch_size):
     test_loader = DataLoader(test_dataset, shuffle=True, batch_size=batch_size)
 
     return train_loader, test_loader
-
-
-if __name__ == '__main__':
-    train_loader, test_loader = create_dataloaders(train_path, test_path, 50)
-    iterable = iter(train_loader)
-    sample_x = next(iterable)
-    print(sample_x)
-    print(sample_x.shape)
