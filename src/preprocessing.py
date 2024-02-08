@@ -12,13 +12,17 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from collections import Counter
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
+from tqdm import tqdm
 nltk.download('wordnet')
-
+nltk.download('stopwords')
 parent = Path(__file__).parent
-data_path = os.path.join(parent, "data/raw")
+data_path = os.path.join(parent, "../data/raw")
+processed_path = os.path.join(parent, "../data/processed")
 
 train_data = pd.read_csv(os.path.join(data_path, "train.csv"), sep=',')
 test_data = pd.read_csv(os.path.join(data_path, "test.csv"), sep=',')
+
+vector_size = 512
 
 def remove_irrelevant_chars(text):
     text = re.sub('[^a-zA-Z]', ' ', text)  
@@ -56,11 +60,19 @@ def print_most_frequent_ngrams(data, column, sentiment, n, top_n=20):
 def preprocess_data(data):
     # Apply preprocessing steps
     data['cleaned_review'] = data['review'].apply(remove_irrelevant_chars)
-    data['tokenized_review'] = data['cleaned_review'].apply(tokenize_text)
-    data['filtered_review'] = data['tokenized_review'].apply(filter_stop_words)
-    data['stemmed_review'] = data['filtered_review'].apply(stem_tokens)
-    data['lemmatized_review'] = data['filtered_review'].apply(lemmatize_tokens)
+    print("removed irrelevant characters")
+    tqdm.pandas()
+    print("tokenizing", flush=True)
+    data['tokenized_review'] = data['cleaned_review'].progress_apply(tokenize_text)
+    print("filtering reviews", flush=True)
+    data['filtered_review'] = data['tokenized_review'].progress_apply(filter_stop_words)
+    print("stemming reviews", flush=True)
+    data['stemmed_review'] = data['filtered_review'].progress_apply(stem_tokens)
+    print("lemmatizing reviews", flush=True)
+    data['lemmatized_review'] = data['filtered_review'].progress_apply(lemmatize_tokens)
+    print("removing all words that are less than 2 characters", flush=True)
     data['final_review'] = data['lemmatized_review'].apply(lambda tokens: [token for token in tokens if len(token) > 2])
+    print("made final preprocessed version", flush=True)
     return data
 
 def vectorize_and_train(train_data, test_data, vectorizer_type='count'):
@@ -85,6 +97,7 @@ def vectorize_and_train(train_data, test_data, vectorizer_type='count'):
     print(f"Classification Report for {vectorizer_type.capitalize()}Vectorizer:")
     print(classification_report(test_data['sentiment'], y_pred))
 
+
 if __name__ == '__main__':
 
     stemmer = SnowballStemmer('english')
@@ -92,9 +105,12 @@ if __name__ == '__main__':
     stop_words = set(stopwords.words('english'))
     # Preprocess train_data
     train_data = preprocess_data(train_data)
-
     # Preprocess test_data
     test_data = preprocess_data(test_data)
+    train_data[['final_review', 'sentiment']].to_csv(os.path.join(processed_path, "train.csv"))
+    test_data[['final_review', 'sentiment']].to_csv(os.path.join(processed_path, "test.csv"))
+    train_data[['final_review', 'sentiment']].to_pickle(os.path.join(processed_path, "train.pkl"))
+    test_data[['final_review', 'sentiment']].to_pickle(os.path.join(processed_path, "test.pkl"))
     # Call the function for CountVectorizer
     vectorize_and_train(train_data, test_data, vectorizer_type='count')
 
@@ -102,21 +118,7 @@ if __name__ == '__main__':
     vectorize_and_train(train_data, test_data, vectorizer_type='tfidf')
 
     #------------------------------------------------------------------
-    #this is for eda
-    train_data['bigrams'] = train_data['final_review'].apply(lambda x: generate_ngrams(x, 2))
-    train_data['threegrams'] = train_data['final_review'].apply(lambda x: generate_ngrams(x, 3))
 
-    print_most_frequent_ngrams(train_data, 'bigrams', 'positive', 2)
-    print_most_frequent_ngrams(train_data, 'threegrams', 'positive', 3)
-    print_most_frequent_ngrams(train_data, 'bigrams', 'negative', 2)
-    print_most_frequent_ngrams(train_data, 'threegrams', 'negative', 3)
-
-    #analysis for eda
-    '''Positive reviews tend to focus on specific elements such as effects, character development, and narrative quality.
-    Negative reviews often mention disappointment with aspects like plot coherence, acting, and overall production value.
-    Certain phrases like "worst movie ever" and "best movie ever" are highly polarizing and frequently appear in negative and positive reviews, respectively.
-    The mention of "new york city" in both positive and negative reviews suggests the importance of setting or context in shaping viewer opinions.'''
-    #------------------------------------------------------------------
     
 
 """For CountVectorizer:
