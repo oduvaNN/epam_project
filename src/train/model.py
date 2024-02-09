@@ -17,7 +17,7 @@ class SentimentRNN(nn.Module):
 
         self.embedding = nn.Embedding(vocab_size, embedding_dim)
 
-        self.lstm = nn.LSTM(input_size=embedding_dim, hidden_dim=self.hidden_dim,
+        self.lstm = nn.LSTM(input_size=embedding_dim, hidden_size=self.hidden_dim,
                             num_layers=self.num_layers, batch_first=True)
 
         self.dropout = nn.Dropout(0.25)
