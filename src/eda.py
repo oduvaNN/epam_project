@@ -62,7 +62,10 @@ if __name__ == '__main__':
     plt.show()
     print(train_data['sentiment'].describe())
 
-    '''The standard deviation suggests moderate variability in review lengths, reflecting the diversity of reviews.'''
+    '''The distribution of the data appears to be right-skewed, as the mean (1310.55) is greater than the median (971), and the maximum value (13704) is considerably higher than the mean.
+    The standard deviation (987.96) indicates moderate variability in the data.
+    The interquartile range (IQR), the range between the 25th and 75th percentiles (899 to 1595), provides insights into the spread of the middle 50% of the data.
+    There might be outliers present in the dataset, given the large difference between the maximum value and the 75th percentile.'''
 
     # Analyze the length of reviews
     train_data['review_length'] = train_data['review'].apply(len)
