@@ -5,23 +5,25 @@
 ##  Conclusions from EDA
 ### Describing the data
 
-... Data columns (total 2 columns):
+``` 
+Data columns (total 2 columns):
      Column     Non-Null Count  Dtype
 ---  ------     --------------  -----
  0   review     40000 non-null  object
  1   sentiment  40000 non-null  object
-...
+```
 
-...review sentiment
+```
+review sentiment
 count                                               40000     40000
 unique                                              39728         2
-top     Loved today's show!!! It was a variety and not...  positive
+top     Loved today's show!!! It was a variety and not```  positive
 000
 count        40000
 unique           2
 top       positive
 freq         20000
-...
+```
 
 
 - The sentiment distribution is balanced with 20,000 positive and likely 20,000 negative reviews. This balance is advantageous for training a sentiment analysis model.
@@ -30,7 +32,8 @@ freq         20000
 
 ### Distribution of data
 
-...count    40000.000000
+```
+count    40000.000000
 mean      1310.549450
 std        987.955229
 min         41.000000
@@ -38,7 +41,7 @@ min         41.000000
 50%        971.000000
 75%       1595.000000
 max      13704.000000
-...
+```
 
 - The distribution of the data appears to be right-skewed, as the mean (1310.55) is greater than the median (971), and the maximum value (13704) is considerably higher than the mean.
 
@@ -50,7 +53,8 @@ max      13704.000000
 
 ### Top words and their frequencies
 
-...Top words and their frequencies(for positive reviews):
+```
+Top words and their frequencies(for positive reviews):
 br br: 1.0
 film: 0.7752135432746733
 movie: 0.7109704641350211
@@ -71,7 +75,7 @@ love: 0.14531233919934136
 well: 0.14137593907584645
 really: 0.13900895338067304
 people: 0.13877740043223216
-...
+```
 
 - The top words align with positive sentiments associated with movie enjoyment, good content, and positive expressions.
 
@@ -81,7 +85,8 @@ people: 0.13877740043223216
 
 - Positive expressions like "great," "love," and "good" contribute to the overall positive sentiment in the word cloud.
 
-...Top words and their frequencies(for negative reviews):
+```
+Top words and their frequencies(for negative reviews):
 br br: 1.0
 movie: 0.8132909121354926
 film: 0.6266775111834079
@@ -101,7 +106,7 @@ think: 0.13300480826734923
 look: 0.13219146951175753
 scene: 0.13128244384374327
 know: 0.12984714015740498
-...
+```
 
 - The top words align with negative sentiments associated with dissatisfaction with movies, characters, and aspects of the content.
     
@@ -113,7 +118,8 @@ know: 0.12984714015740498
 
 ### Top 20 n-grams for poitive and negative review
 
-...Top 20 2-grams in bigrams for positive reviews:
+```
+Top 20 2-grams in bigrams for positive reviews:
 one best: 1360 times
 even though: 864 times
 year old: 850 times
@@ -134,9 +140,10 @@ well done: 559 times
 film like: 551 times
 movie ever: 530 times
 horror film: 529 times
-...
+```
 
-...Top 20 3-grams in threegrams for positive reviews:
+```
+Top 20 3-grams in threegrams for positive reviews:
 movie ever seen: 201 times
 new york city: 154 times
 film ever made: 133 times
@@ -157,9 +164,10 @@ highly recommend movie: 65 times
 one time favorite: 65 times
 feel good movie: 60 times
 one favorite movie: 59 times
-...
+```
 
-...Top 20 2-grams in bigrams for negative reviews:
+```
+Top 20 2-grams in bigrams for negative reviews:
 look like: 1774 times
 ever seen: 1378 times
 special effect: 1206 times
@@ -180,9 +188,10 @@ horror film: 657 times
 bad guy: 642 times
 make movie: 635 times
 watch movie: 629 times
-...
+```
 
-...Top 20 3-grams in threegrams for negative reviews:
+```
+Top 20 3-grams in threegrams for negative reviews:
 worst movie ever: 605 times
 movie ever seen: 516 times
 worst film ever: 281 times
@@ -203,7 +212,7 @@ low budget horror: 74 times
 could much better: 73 times
 movie look like: 72 times
 good thing movie: 72 times
-...
+```
 
 
 - Positive reviews tend to focus on specific elements such as effects, character development, and narrative quality.
@@ -226,16 +235,19 @@ good thing movie: 72 times
 
 ### Comparing stemming vs lemmatization
 
-...Original Review:
+```
+Original Review:
 I remember when this was in theaters, reviews said it was horrible. Well, I didn't think it was that bad. It was amusing and had a lot of tongue-in-cheek humor concerning families around holiday time.<br /><br />Ben Affleck is a rich guy who needs to find a family for Christmas to please his girlfriend. He goes to visit the house he grew 
 up in and strikes a deal to rent the family there for Christmas. I really liked the lawyer scene where they sign a contract. That was funny.<br /><br />So, he makes silly requests of the family and even writes scripts for them to read. Of course, the family has a hot daughter for the love interest. And he learns that the holidays aren't so bad after all.<br /><br />Also, the whole doo-dah act was funny, especially when they replaced the first one with a black guy, and the girlfriends's parents didn't even say anything about it. And the parts where doo-dah is hitting on his "supposed daughter." FINAL VERDICT: I thought it's worth checking out if you catch it on cable.     
-
+```
+```
 Stemmed Review:
 ['rememb', 'theater', 'review', 'said', 'horribl', 'well', 'think', 'bad', 'amus', 'lot', 'tongu', 'cheek', 'humor', 'concern', 'famili', 'around', 'holiday', 'time', 'br', 'br', 'ben', 'affleck', 'rich', 'guy', 'need', 'find', 'famili', 'christma', 'pleas', 'girlfriend', 'goe', 'visit', 'hous', 'grew', 'strike', 'deal', 'rent', 'famili', 'christma', 'realli', 'like', 'lawyer', 'scene', 'sign', 'contract', 'funni', 'br', 'br', 'make', 'silli', 'request', 'famili', 'even', 'write', 'script', 'read', 'cours', 'famili', 'hot', 'daughter', 'love', 'interest', 'learn', 'holiday', 'bad', 'br', 'br', 'also', 'whole', 'doo', 'dah', 'act', 'funni', 'especi', 'replac', 'first', 'one', 'black', 'guy', 'girlfriend', 'parent', 'even', 'say', 'anyth', 'part', 'doo', 'dah', 'hit', 'suppos', 'daughter', 'final', 'verdict', 'thought', 'worth', 'check', 'catch', 'cabl']
-
+```
+```
 Lemmatized Review:
 ['remember', 'theater', 'review', 'said', 'horrible', 'well', 'think', 'bad', 'amusing', 'lot', 'tongue', 'cheek', 'humor', 'concerning', 'family', 'around', 'holiday', 'time', 'br', 'br', 'ben', 'affleck', 'rich', 'guy', 'need', 'find', 'family', 'christmas', 'please', 'girlfriend', 'go', 'visit', 'house', 'grew', 'strike', 'deal', 'rent', 'family', 'christmas', 'really', 'liked', 'lawyer', 'scene', 'sign', 'contract', 'funny', 'br', 'br', 'make', 'silly', 'request', 'family', 'even', 'writes', 'script', 'read', 'course', 'family', 'hot', 'daughter', 'love', 'interest', 'learns', 'holiday', 'bad', 'br', 'br', 'also', 'whole', 'doo', 'dah', 'act', 'funny', 'especially', 'replaced', 'first', 'one', 'black', 'guy', 'girlfriend', 'parent', 'even', 'say', 'anything', 'part', 'doo', 'dah', 'hitting', 'supposed', 'daughter', 'final', 'verdict', 'thought', 'worth', 'checking', 'catch', 'cable']
-...
+```
 
 - In this specific case, lemmatization provides a more linguistically accurate representation of the original text compared to stemming.
 
@@ -245,7 +257,8 @@ Lemmatized Review:
 
 ### Comparing vectorizaions
 
-...Classification Report for CountVectorizer:
+```
+Classification Report for CountVectorizer:
               precision    recall  f1-score   support
 
     negative       0.89      0.88      0.89      5000
@@ -253,9 +266,10 @@ Lemmatized Review:
     accuracy                           0.89     10000
    macro avg       0.89      0.89      0.89     10000
 weighted avg       0.89      0.89      0.89     10000
-...
+```
 
-...Classification Report for TfidfVectorizer:
+```
+Classification Report for TfidfVectorizer:
               precision    recall  f1-score   support
 
     negative       0.91      0.88      0.89      5000
@@ -264,7 +278,7 @@ weighted avg       0.89      0.89      0.89     10000
     accuracy                           0.90     10000
    macro avg       0.90      0.90      0.90     10000
 weighted avg       0.90      0.90      0.90     10000
-...
+```
 
 For CountVectorizer:
 
